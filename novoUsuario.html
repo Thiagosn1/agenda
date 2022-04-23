@@ -33,16 +33,83 @@
 
                             </div>
                             <div class="card-body">
-                                <form action="main.html" method="post">
+                                <form method="post" action="main.html">
                                     <div class="form-group">
-                                        <label>Nome</label>
+                                        <label for="nomeUsuario">Nome</label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
-                                                <div class="input-group-text">@</div>
+                                                <div class="input-group-text">
+                                                    <i class="bi-people-fill"></i>
+                                                </div>
+                                            </div>
+                                            <input type="text" class="form-control" 
+                                            id="nomeUsuario" placeholder="Digite seu nome" required>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm">
+                                            <div class="form-group">
+                                                <label for="mailUsuario">E-mail</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <div class="input-group-text">
+                                                            <i class="bi-at"></i>
+                                                        </div>
+                                                    </div>
+                                                    <input type="text" class="form-control" 
+                                                    id="mailUsuario" placeholder="Digite seu e-mail" required>
+                                                </div>
                                             </div>
                                         </div>
-                                        <input type="text" class="form-control" 
-                                        id="nomeUsuario" placeholder="Digite seu nome" required>
+                                        <div class="col-sm">
+                                            <div class="form-group">
+                                                <label for="mailUsuario"> Repita o e-mail</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <div class="input-group-text">
+                                                            <i class="bi-at"></i>
+                                                        </div>
+                                                    </div>
+                                                    <input type="text" class="form-control" 
+                                                    id="mailUsuario" placeholder="Repita seu e-mail" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm">
+                                            <div class="form-group">
+                                                <label for="senhaUsuario">Senha</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <div class="input-group-text">
+                                                            <i class="bi-key-fill"></i>
+                                                        </div>
+                                                    </div>
+                                                    <input type="password" class="form-control" 
+                                                    id="senhaUsuario" placeholder="Digite sua senha" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm">
+                                            <div class="form-group">
+                                                <label for="senhaUsuario"> Repita a senha</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <div class="input-group-text">
+                                                            <i class="bi-key-fill"></i>
+                                                        </div>
+                                                    </div>
+                                                    <input type="password" class="form-control" 
+                                                    id="senhaUsuario" placeholder="Repita sua senha" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row text-right">
+                                        <div class="col-sm">
+                                            <button type="submit" class="btn btn-primary">Cadastar</button>
+                                        </div>
                                     </div>
                                 </form>
                             </div>
