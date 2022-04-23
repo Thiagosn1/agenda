@@ -6,6 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Agenda de contatos</title>
         <link rel="stylesheet" href="css/bootstrap.css">
+        <link rel="stylesheet" href="css/bootstrap-icons.css">
 
         <style>
             html {
@@ -26,16 +27,24 @@
                 <div class="row">
                     <div class="col-sm"></div>
                     <div class="col-sm-10">
-                        <div class="card">
+                        <div class="card border-primary">
                             <div class="card-header bg-primary text-white">
                                 <h5>Cadastro de novo usuário</h5>
-                                
-                            </div>
-                            <div class="card-body">
 
                             </div>
-                            <div class="card-footer">
-                                
+                            <div class="card-body">
+                                <form action="main.html" method="post">
+                                    <div class="form-group">
+                                        <label>Nome</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text">@</div>
+                                            </div>
+                                        </div>
+                                        <input type="text" class="form-control" 
+                                        id="nomeUsuario" placeholder="Digite seu nome" required>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
