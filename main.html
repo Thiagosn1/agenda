@@ -34,8 +34,11 @@
                 <div class="collapse navbar-collapse" id="navbar">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button">Cadastros</a>
-                            <div id="menuCadastros"></div>
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" 
+                            id="menuCadastros" aria-haspopup="true" aria-expanded="false">Cadastros</a>
+                            <div class="dropdown-menu" aria-labelledby="menuCadastros">
+                                <a class="dropdown-item" href="cadastroContato.html">Novo contato</a>
+                            </div>
                         </li>
                     </ul>
                 </div>
