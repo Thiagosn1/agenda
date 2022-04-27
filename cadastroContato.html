@@ -69,92 +69,86 @@
             </div>
         </div>
     </nav>
-    <div class="h-100 row align-items-center">
+    <div class="h-100 row align-items-center pt-5">
         <div class="container">
             <div class="row">
                 <div class="col-sm"></div>
-                <div class="col-sm-10">
-                    <div class="card border-primary">
+                <div class="col-sm-12">
+                    <div class="card border-primary my-5">
                         <div class="card-header bg-primary text-white">
-                            <h5>Cadastro de novo usuário</h5>
+                            <h5>Cadastro de contato</h5>
 
                         </div>
                         <div class="card-body">
                             <form method="post" action="main.html">
-                                <div class="form-group">
-                                    <label for="nomeUsuario">Nome</label>
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text">
-                                                <i class="bi-people-fill"></i>
-                                            </div>
-                                        </div>
-                                        <input type="text" class="form-control" 
-                                        id="nomeUsuario" placeholder="Digite seu nome" required>
-                                    </div>
-                                </div>
+                                <h5 class="text-primary">Dados pessoais</h5>
+                                <hr>
                                 <div class="row">
                                     <div class="col-sm">
-                                        <div class="form-group">
-                                            <label for="mailUsuario">E-mail</label>
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <div class="input-group-text">
-                                                        <i class="bi-at"></i>
+                                        <div class="row">
+                                            <div class="col-sm">
+                                                <div class="form-group">
+                                                    <label for="nomeContato">Nome</label>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <div class="input-group-text">
+                                                                <i class="bi-person-circle"></i>
+                                                            </div>
+                                                        </div>
+                                                        <input class="form-control" type="text" name="nameContato" 
+                                                        id="nomeContato" placeholder="Digite o nome" required>
                                                     </div>
                                                 </div>
-                                                <input type="text" class="form-control" 
-                                                id="mailUsuario" placeholder="Digite seu e-mail" required>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm">
+                                                <div class="form-group">
+                                                    <label for="nascimentoContato">Data de nascimento</label>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <div class="input-group-text">
+                                                                <i class="bi-calendar-date"></i>
+                                                            </div>
+                                                        </div>
+                                                        <input class="form-control" type="text" name="nascimentoContato" 
+                                                        id="nascimentoContato" placeholder="Digite a data de nascimento" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm">
+                                                <div class="form-group">
+                                                    <label for="sexoContato">Sexo</label>
+                                                    <div class="input-group">
+                                                        <div class="form-check form-check-inline">
+
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-sm">
-                                        <div class="form-group">
-                                            <label for="mailUsuario"> Repita o e-mail</label>
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <div class="input-group-text">
-                                                        <i class="bi-at"></i>
-                                                    </div>
-                                                </div>
-                                                <input type="text" class="form-control" 
-                                                id="mailUsuario" placeholder="Repita seu e-mail" required>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <div class="col-sm"></div>
+                                </div>
+                                <h5 class="text-primary">Telefones</h5>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm"></div>
+                                    <div class="col-sm"></div>
+                                </div>
+                                <h5 class="text-primary">Endereço</h5>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm"></div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-sm">
-                                        <div class="form-group">
-                                            <label for="senhaUsuario">Senha</label>
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <div class="input-group-text">
-                                                        <i class="bi-key-fill"></i>
-                                                    </div>
-                                                </div>
-                                                <input type="password" class="form-control" 
-                                                id="senhaUsuario" placeholder="Digite sua senha" required>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm">
-                                        <div class="form-group">
-                                            <label for="senhaUsuario"> Repita a senha</label>
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <div class="input-group-text">
-                                                        <i class="bi-key-fill"></i>
-                                                    </div>
-                                                </div>
-                                                <input type="password" class="form-control" 
-                                                id="senhaUsuario" placeholder="Repita sua senha" required>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <div class="col-sm"></div>
+                                    <div class="col-sm"></div>
                                 </div>
-                                <div class="row text-right">
-                                    <div class="col-sm">
+                                <div class="row">
+                                    <div class="col-sm text-right">
                                         <button type="submit" class="btn btn-primary">Cadastar</button>
                                     </div>
                                 </div>
