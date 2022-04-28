@@ -21,6 +21,9 @@
             height: 100%;
             overflow-x: hidden;
         }
+        .custom-file-input ~ .custom-file-label::after {
+            content: "Selecionar";
+        }
     </style>
 </head>
 
@@ -95,8 +98,8 @@
                                                                 <i class="bi-person-circle"></i>
                                                             </div>
                                                         </div>
-                                                        <input class="form-control" type="text" name="nameContato" 
-                                                        id="nomeContato" placeholder="Digite o nome" required>
+                                                        <input class="form-control" type="text" name="nameContato"
+                                                            id="nomeContato" placeholder="Digite o nome" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -111,8 +114,9 @@
                                                                 <i class="bi-calendar-date"></i>
                                                             </div>
                                                         </div>
-                                                        <input class="form-control" type="text" name="nascimentoContato" 
-                                                        id="nascimentoContato" placeholder="Digite a data de nascimento" required>
+                                                        <input class="form-control" type="text" name="nascimentoContato"
+                                                            id="nascimentoContato"
+                                                            placeholder="Digite a data de nascimento" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -124,13 +128,15 @@
                                                     <div class="input-group">
                                                         <div class="form-check form-check-inline">
                                                             <input class="form-check-input" type="radio"
-                                                            name="sexoContato" id="sexoMasculino" value="masculino">
-                                                            <label class="form-check-label" for="sexoMasculino">Masculino</label>
+                                                                name="sexoContato" id="sexoMasculino" value="masculino">
+                                                            <label class="form-check-label"
+                                                                for="sexoMasculino">Masculino</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input class="form-check-input" type="radio"
-                                                            name="sexoContato" id="sexoFeminino" value="feminino">
-                                                            <label class="form-check-label" for="sexoFeminino">Feminino</label>
+                                                                name="sexoContato" id="sexoFeminino" value="feminino">
+                                                            <label class="form-check-label"
+                                                                for="sexoFeminino">Feminino</label>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -146,20 +152,110 @@
                                                                 <i class="bi-at"></i>
                                                             </div>
                                                         </div>
-                                                        <input class="form-control" type="text" name="mailContato" 
-                                                        id="nascimentoContato" placeholder="Digite a data de nascimento" required>
+                                                        <input class="form-control" type="email" name="mailContato"
+                                                            id="mailContato" placeholder="Digite o e-mail" required>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-sm"></div>
+                                    <div class="col-sm">
+                                        <div class="row">
+                                            <div class="col-sm">
+                                                <div class="form-group">
+                                                    <label for="fotoContato">Foto</label>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <div class="input-group-text">
+                                                                <i class="bi-file-earmark-person"></i>
+                                                            </div>
+                                                        </div>
+                                                        <div class="custom-file">
+                                                            <input class="custom-file-input" type="file"
+                                                                name="fotoContato" id="fotoContato">
+                                                            <label class="custom-file-label" for="fotoContato">
+                                                                Escolha a foto...
+                                                            </label>
+                                                        </div>
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <h5 class="text-primary">Telefones</h5>
                                 <hr>
                                 <div class="row">
-                                    <div class="col-sm"></div>
-                                    <div class="col-sm"></div>
+                                    <div class="col-sm">
+                                        <div class="row">
+                                            <div class="col-sm">
+                                                <div class="form-group">
+                                                    <label for="telefone1Contato">Telefone</label>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <div class="input-group-text">
+                                                                <i class="bi-phone"></i>
+                                                            </div>
+                                                        </div>
+                                                        <input class="form-control" type="text" name="telefone1Contato"
+                                                            id="telefone1Contato" placeholder="(xx) xxxxx-xxxx" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm">
+                                                <div class="form-group">
+                                                    <label for="telefone2Contato">Telefone</label>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <div class="input-group-text">
+                                                                <i class="bi-phone"></i>
+                                                            </div>
+                                                        </div>
+                                                        <input class="form-control" type="text" name="telefone2Contato"
+                                                            id="telefone2Contato" placeholder="(xx) xxxxx-xxxx" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm">
+                                        <div class="row">
+                                            <div class="col-sm">
+                                                <div class="form-group">
+                                                    <label for="telefone3Contato">Telefone</label>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <div class="input-group-text">
+                                                                <i class="bi-phone"></i>
+                                                            </div>
+                                                        </div>
+                                                        <input class="form-control" type="text" name="telefone3Contato"
+                                                            id="telefone3Contato" placeholder="(xx) xxxxx-xxxx">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm">
+                                                <div class="form-group">
+                                                    <label for="telefone4Contato">Telefone</label>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <div class="input-group-text">
+                                                                <i class="bi-phone"></i>
+                                                            </div>
+                                                        </div>
+                                                        <input class="form-control" type="text" name="telefone4Contato"
+                                                            id="telefone4Contato" placeholder="(xx) xxxxx-xxxx">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <h5 class="text-primary">Endereço</h5>
                                 <hr>
