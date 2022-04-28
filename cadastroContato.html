@@ -21,7 +21,8 @@
             height: 100%;
             overflow-x: hidden;
         }
-        .custom-file-input ~ .custom-file-label::after {
+
+        .custom-file-input~.custom-file-label::after {
             content: "Selecionar";
         }
     </style>
@@ -200,7 +201,8 @@
                                                             </div>
                                                         </div>
                                                         <input class="form-control" type="text" name="telefone1Contato"
-                                                            id="telefone1Contato" placeholder="(xx) xxxxx-xxxx" required>
+                                                            id="telefone1Contato" placeholder="(xx) xxxxx-xxxx"
+                                                            required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -216,7 +218,8 @@
                                                             </div>
                                                         </div>
                                                         <input class="form-control" type="text" name="telefone2Contato"
-                                                            id="telefone2Contato" placeholder="(xx) xxxxx-xxxx" required>
+                                                            id="telefone2Contato" placeholder="(xx) xxxxx-xxxx"
+                                                            required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -257,7 +260,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <h5 class="text-primary">Endereço</h5>
+                                <h5 class="text-primary">Endereços</h5>
                                 <hr>
                                 <div class="row">
                                     <div class="col-sm">
@@ -268,20 +271,96 @@
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <div class="input-group-text">
-                                                                <i class="bi-map"></i>
+                                                                <i class="bi-cone"></i>
                                                             </div>
                                                         </div>
                                                         <input class="form-control" type="text" name="logradouroContato"
-                                                            id="tlogradouroContato" placeholder="Rua, avenida, travessa e outros">
+                                                            id="logradouroContato"
+                                                            placeholder="Rua, Avenida, Travessa e Outros" required>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>logradouro
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-sm"></div>
-                                    <div class="col-sm"></div>
+                                    <div class="col-sm">
+                                        <div class="row">
+                                            <div class="col-sm">
+                                                <div class="form-group">
+                                                    <label for="complementoContato">Complemento</label>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <div class="input-group-text">
+                                                                <i class="bi-pin"></i>
+                                                            </div>
+                                                        </div>
+                                                        <input class="form-control" type="text"
+                                                            name="complementoContato" id="complementoContato"
+                                                            placeholder="Numero, Quadra, Lote e Outros" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm">
+                                                <div class="form-group">
+                                                    <label for="estadoContato">Estado</label>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <div class="input-group-text">
+                                                                <i class="bi-grid"></i>
+                                                            </div>
+                                                        </div>
+                                                        <select class="form-control" name="estadoContato"
+                                                            id="estadoContato" required>
+                                                            <option value="">
+                                                                Escolha o Estado
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm">
+                                        <div class="row">
+                                            <div class="col-sm">
+                                                <div class="form-group">
+                                                    <label for="bairroContato">Bairro</label>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <div class="input-group-text">
+                                                                <i class="bi-house"></i>
+                                                            </div>
+                                                        </div>
+                                                        <input class="form-control" type="text" name="bairroContato"
+                                                            id="bairroContato" placeholder="Digite o Bairro" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm">
+                                                <div class="form-group">
+                                                    <label for="cidadeContato">Cidade</label>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <div class="input-group-text">
+                                                                <i class="bi-globe"></i>
+                                                            </div>
+                                                        </div>
+                                                        <select class="form-control" name="cidadeContato"
+                                                            id="cidadeContato" required>
+                                                            <option value="">
+                                                                Escolha a cidade
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-sm text-right">
