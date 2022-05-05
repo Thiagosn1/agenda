@@ -8,8 +8,11 @@
     <title>Agenda de contatos</title>
     <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="css/bootstrap-icons.css">
-    <script src="js/jquery-3.3.1.slim.js"></script>
+    <script src="js/jquery-3.3.1.js"></script>
     <script src="js/bootstrap.bundle.js"></script>
+    <script src="js/jquery.validate.js"></script>
+    <script src="js/messages_pt_BR.js"></script>
+    <script src="js/dateITA.js"></script>
     <style>
         html {
             height: 100%;
@@ -81,10 +84,9 @@
                     <div class="card border-primary my-5">
                         <div class="card-header bg-primary text-white">
                             <h5>Cadastro de contato</h5>
-
                         </div>
                         <div class="card-body">
-                            <form method="post" action="main.html">
+                            <form id="cadastroContato" method="post" action="cadastroContato.html">
                                 <h5 class="text-primary">Dados pessoais</h5>
                                 <hr>
                                 <div class="row">
@@ -117,7 +119,7 @@
                                                         </div>
                                                         <input class="form-control" type="text" name="nascimentoContato"
                                                             id="nascimentoContato"
-                                                            placeholder="Digite a data de nascimento" required>
+                                                            placeholder="Digite a data de nascimento">
                                                     </div>
                                                 </div>
                                             </div>
@@ -314,9 +316,7 @@
                                                         </div>
                                                         <select class="form-control" name="estadoContato"
                                                             id="estadoContato" required>
-                                                            <option value="">
-                                                                Escolha o Estado
-                                                            </option>
+                                                            <option value="">Escolha o Estado</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -352,9 +352,7 @@
                                                         </div>
                                                         <select class="form-control" name="cidadeContato"
                                                             id="cidadeContato" required>
-                                                            <option value="">
-                                                                Escolha a cidade
-                                                            </option>
+                                                            <option value="">Escolha a cidade</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -398,6 +396,53 @@
             </div>
         </div>
     </div>
+    <script>
+        jQuery.validator.setDefaults({
+            errorElement: 'span',
+            errorPlacement: function (error, element) {
+                error.addClass('invalid-feedback');
+                element.closest('.form-group').append(error);
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass('is-invalid');
+            }
+        });
+        $(document).ready(function () {
+            $("#cadastroContato").validate({
+				rules: {
+					nomeContato: {
+						minlength: 5
+					},
+					nascimentoContato: {
+						dateITA: true
+					},
+					sexoContato: {
+						required: true
+					}
+				}
+			});
+			$("#nascimentoContato").mask("00/00/0000");
+
+			var SPMaskBehavior = function (val) {
+				return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00009';
+			},
+				spOptions = {
+					onKeyPress: function (val, e, field, options) {
+						field.mask(SPMaskBehavior.apply({}, arguments), options);
+					}
+				};
+
+			$('.mascara-telefone').mask(SPMaskBehavior, spOptions);
+
+			$("#estadoContato").change(function(){
+				$("#cidadeContato").html('<option> Carregando...</option>');
+				$("#cidadeContato").load('listaCidades.php?codigoEstado=' + $("#estadoContato").val());
+			});
+        });
+    </script>
 </body>
 
 </html>
