@@ -13,6 +13,7 @@
     <script src="js/jquery.validate.js"></script>
     <script src="js/messages_pt_BR.js"></script>
     <script src="js/dateITA.js"></script>
+    <script src="js/jquery.mask.js"></script>
     <style>
         html {
             height: 100%;
@@ -119,7 +120,7 @@
                                                         </div>
                                                         <input class="form-control" type="text" name="nascimentoContato"
                                                             id="nascimentoContato"
-                                                            placeholder="Digite a data de nascimento">
+                                                            placeholder="DD/MM/AAAA">
                                                     </div>
                                                 </div>
                                             </div>
@@ -134,8 +135,7 @@
                                                                 name="sexoContato" id="sexoMasculino" value="masculino">
                                                             <label class="form-check-label"
                                                                 for="sexoMasculino">Masculino</label>
-                                                        </div>
-                                                        <div class="form-check form-check-inline">
+                                                            &nbsp;
                                                             <input class="form-check-input" type="radio"
                                                                 name="sexoContato" id="sexoFeminino" value="feminino">
                                                             <label class="form-check-label"
@@ -202,7 +202,7 @@
                                                                 <i class="bi-phone"></i>
                                                             </div>
                                                         </div>
-                                                        <input class="form-control" type="text" name="telefone1Contato"
+                                                        <input class="form-control mascara-telefone" type="text" name="telefone1Contato"
                                                             id="telefone1Contato" placeholder="(xx) xxxxx-xxxx"
                                                             required>
                                                     </div>
@@ -219,7 +219,7 @@
                                                                 <i class="bi-phone"></i>
                                                             </div>
                                                         </div>
-                                                        <input class="form-control" type="text" name="telefone2Contato"
+                                                        <input class="form-control mascara-telefone" type="text" name="telefone2Contato"
                                                             id="telefone2Contato" placeholder="(xx) xxxxx-xxxx"
                                                             required>
                                                     </div>
@@ -238,7 +238,7 @@
                                                                 <i class="bi-phone"></i>
                                                             </div>
                                                         </div>
-                                                        <input class="form-control" type="text" name="telefone3Contato"
+                                                        <input class="form-control mascara-telefone" type="text" name="telefone3Contato"
                                                             id="telefone3Contato" placeholder="(xx) xxxxx-xxxx">
                                                     </div>
                                                 </div>
@@ -254,7 +254,7 @@
                                                                 <i class="bi-phone"></i>
                                                             </div>
                                                         </div>
-                                                        <input class="form-control" type="text" name="telefone4Contato"
+                                                        <input class="form-control mascara-telefone" type="text" name="telefone4Contato"
                                                             id="telefone4Contato" placeholder="(xx) xxxxx-xxxx">
                                                     </div>
                                                 </div>
@@ -412,35 +412,35 @@
         });
         $(document).ready(function () {
             $("#cadastroContato").validate({
-				rules: {
-					nomeContato: {
-						minlength: 5
-					},
-					nascimentoContato: {
-						dateITA: true
-					},
-					sexoContato: {
-						required: true
-					}
-				}
-			});
-			$("#nascimentoContato").mask("00/00/0000");
+                rules: {
+                    nomeContato: {
+                        minlength: 5
+                    },
+                    nascimentoContato: {
+                        dateITA: true
+                    },
+                    sexoContato: {
+                        required: true
+                    }
+                }
+            });
+            $("#nascimentoContato").mask("00/00/0000");
 
-			var SPMaskBehavior = function (val) {
-				return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00009';
-			},
-				spOptions = {
-					onKeyPress: function (val, e, field, options) {
-						field.mask(SPMaskBehavior.apply({}, arguments), options);
-					}
-				};
+            var SPMaskBehavior = function (val) {
+                    return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00009';
+                },
+                spOptions = {
+                    onKeyPress: function (val, e, field, options) {
+                        field.mask(SPMaskBehavior.apply({}, arguments), options);
+                    }
+                };
 
-			$('.mascara-telefone').mask(SPMaskBehavior, spOptions);
+            $('.mascara-telefone').mask(SPMaskBehavior, spOptions);
 
-			$("#estadoContato").change(function(){
-				$("#cidadeContato").html('<option> Carregando...</option>');
-				$("#cidadeContato").load('listaCidades.php?codigoEstado=' + $("#estadoContato").val());
-			});
+            $("#estadoContato").change(function () {
+                $("#cidadeContato").html('<option> Carregando...</option>');
+                $("#cidadeContato").load('listaCidades.php?codigoEstado=' + $("#estadoContato").val());
+            });
         });
     </script>
 </body>
