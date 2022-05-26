@@ -1,29 +1,11 @@
 <?php
 
-session_start();
-
-$verificaUsuarioLogado = $_SESSION['verificaUsuarioLogado'];
-if($verificaUsuarioLogado) {
-
-
-
-
 include "conectaBanco.php";
 
-if (isset($_GET['codigoEstado'])) {
-    $codigoEstado = $_GET['codigoEstado'];
-} else {
-    $codigoEstado = '';
-}
-
-if (isset($_GET['codigoCidade'])) {
-    $codigoCidade = $_GET['codigoCidade'];
-} else {
-    $codigoCidade = "";
-}
-
+$codigoEstado = $_GET['codigoEstado'];
 
 $sqlCidades = "SELECT codigoCidade, nomeCidade FROM cidades WHERE codigoEstado=:codigoEstado";
+
 
 $sqlCidadesST = $conexao->prepare($sqlCidades);
 $sqlCidadesST->bindValue(':codigoEstado', $codigoEstado);
@@ -41,5 +23,5 @@ foreach ($resultadoCidades as list($codigoCidade, $nomeCidade)){
     }
     echo "<option value=\"$codigoCidade\" $selected>$nomeCidade</option>";
 }
-}
+
 ?>
