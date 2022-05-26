@@ -35,7 +35,7 @@
                             <img style="width: 100%;" src="img/logo.jpg" alt="Agenda de contatos">
                         </div>
                         <div class="card-body">
-                            <form id="login" method="post" action="main.html">
+                            <form id="login" method="post" action="main.php">
                                 <div class="form-group">
                                     <label for="mailUsuario">E-mail</label>
                                     <input type="email" class="form-control" id="mailUsuario" name="mailUsuario"
