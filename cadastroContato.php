@@ -446,7 +446,7 @@
 
             $('.mascara-telefone').mask(SPMaskBehavior, spOptions);
 
-            $("#estadoContato").change(function(){
+            $("#estadoContato").change(function () {
 				$("#cidadeContato").html('<option>Carregando...</option>');
 				$("#cidadeContato").load('listaCidades.php?codigoEstado=' + $("#estadoContato").val());
 			});
