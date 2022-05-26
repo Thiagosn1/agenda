@@ -146,7 +146,7 @@
             $("#novoUsuario").validate({
                 rules: {
                     nomeUsuario: {
-                        minlenght: 5
+                        minlength: 5
                     },
                     mail2Usuario: {
                         equalTo: "#mailUsuario"
@@ -155,7 +155,7 @@
                         equalTo: "#senhaUsuario"
                     },
                     senhaUsuario: {
-                        minlenght: 8
+                        minlength: 8
                     }
                 }
             });
