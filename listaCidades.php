@@ -16,12 +16,7 @@ $resultadoCidades = $sqlCidadesST->fetchALL();
 echo "<option value=\"\">Escolha a cidade</option>\n";
 
 foreach ($resultadoCidades as list($codigoCidade, $nomeCidade)){
-    if (!empty($codigoCidade) && $codigoCidade == $codigoCidade) {
-        $selected = 'selected';
-    } else {
-        $selected = '';
-    }
-    echo "<option value=\"$codigoCidade\" $selected>$nomeCidade</option>";
+    echo "<option value=\"$codigoCidade\">$nomeCidade</option>";
 }
 
 ?>
