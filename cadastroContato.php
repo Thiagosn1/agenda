@@ -311,7 +311,7 @@
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <div class="input-group-text">
-                                                                <i class="bi-grid"></i>
+                                                                <i class="bi-globe"></i>
                                                             </div>
                                                         </div>
                                                         <select class="form-control" name="estadoContato"
