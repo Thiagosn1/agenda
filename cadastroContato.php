@@ -317,6 +317,15 @@
                                                         <select class="form-control" name="estadoContato"
                                                             id="estadoContato" required>
                                                             <option value="">Escolha o Estado</option>
+                                                            <?php
+													        $sqlEstados = "SELECT codigoEstado, nomeEstado FROM estados";
+
+													        $resultadoEstados = $conexao->query($sqlEstados)->fetchAll();
+
+													        foreach($resultadoEstados as list($codigoEstado, $nomeEstado)) {
+														        echo "<option value=\"$codigoEstado\" $selected>$nomeEstado</option>\n";
+                                                            }
+													        ?>
                                                         </select>
                                                     </div>
                                                 </div>
