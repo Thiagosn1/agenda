@@ -37,7 +37,7 @@
                             <h5>Cadastro de novo usuário</h5>
                         </div>
                         <div class="card-body">
-                            <form id="novoUsuario" method="post" action="novoUsuario.php">
+                            <form id="novoUsuario" method="post" action="main.php">
                                 <div class="form-group">
                                     <label for="nomeUsuario">Nome</label>
                                     <div class="input-group">
