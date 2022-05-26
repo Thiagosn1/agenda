@@ -43,9 +43,9 @@
                             id="menuCadastros" aria-haspopup="true" aria-expanded="false">
                             <i class="bi-card-list"></i> Cadastros</a>
                         <div class="dropdown-menu" aria-labelledby="menuCadastros">
-                            <a class="dropdown-item" href="cadastroContato.html">
+                            <a class="dropdown-item" href="cadastroContato.php">
                                 <i class="bi-person-fill"></i> Novo contato</a>
-                            <a class="dropdown-item" href="listaContatos.html">
+                            <a class="dropdown-item" href="listaContatos.php">
                                 <i class="bi-list-ul"></i> Lista de contatos</a>
                         </div>
                     </li>
@@ -54,7 +54,7 @@
                             aria-haspopup="true" aria-expanded="false">
                             <i class="bi-gear-fill"></i> Minha conta</a>
                         <div class="dropdown-menu" aria-labelledby="menuConta">
-                            <a class="dropdown-item" href="alterarDados.html">
+                            <a class="dropdown-item" href="alterarDados.php">
                                 <i class="bi-pencil-square"></i> Alterar dados</a>
                             <a class="dropdown-item" href="logout.php">
                                 <i class="bi-door-open-fill"></i> Sair</a>
@@ -65,7 +65,7 @@
                             <i class="bi-info-circle"></i> Sobre</a>
                     </li>
                 </ul>
-                <form class="form-inline my-2 my-lg-0" method="get" action="listaContatos.html">
+                <form class="form-inline my-2 my-lg-0" method="get" action="listaContatos.php">
                     <input class="form-control mr-sm-2" type="search" name="busca" placeholder="Pesquisar">
                     <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Pesquisar</button>
                 </form>
@@ -83,7 +83,7 @@
 
                         </div>
                         <div class="card-body">
-                            <form id="novoUsuario" method="post" action="listaContatos.html">
+                            <form id="novoUsuario" method="post" action="listaContatos.php">
 								<input type="hidden" name="acao" value="salvar">
 								<div class="form-group">
 									<label for="nomeUsuario">Nome*</label>
