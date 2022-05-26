@@ -57,7 +57,7 @@
                             <div class="container">
                                 <div class="row">
                                     <div class="col-sm">
-                                        <a class="btn btn-success btn-block" href="novoUsuario.html">Não sou
+                                        <a class="btn btn-success btn-block" href="novoUsuario.php">Não sou
                                             cadastrado</a>
                                     </div>
                                     <div class="col-sm">
