@@ -323,7 +323,7 @@
 													        $resultadoEstados = $conexao->query($sqlEstados)->fetchAll();
 
 													        foreach($resultadoEstados as list($codigoEstado, $nomeEstado)) {
-														        echo "<option value=\"$codigoEstado\" $selected>$nomeEstado</option>\n";
+														        echo "<option value=\"$codigoEstado\">$nomeEstado</option>\n";
                                                             }
 													        ?>
                                                         </select>
@@ -447,7 +447,7 @@
             $('.mascara-telefone').mask(SPMaskBehavior, spOptions);
 
             $("#estadoContato").change(function(){
-				$("#cidadeContato").html('<option> Carregando...</option>');
+				$("#cidadeContato").html('<option>Carregando...</option>');
 				$("#cidadeContato").load('listaCidades.php?codigoEstado=' + $("#estadoContato").val());
 			});
         });
