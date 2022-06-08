@@ -1,3 +1,7 @@
+<?php
+    include "conectaBanco.php";
+?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -323,9 +327,15 @@
 													        $resultadoEstados = $conexao->query($sqlEstados)->fetchAll();
 
 													        foreach($resultadoEstados as list($codigoEstado, $nomeEstado)) {
-														        echo "<option value=\"$codigoEstado\">$nomeEstado</option>\n";
+                                                                if ($estadoContato == $estadoContato) {
+                                                                    $selected = 'selected';
+                                                                } else {
+                                                                    $selected = '';
+                                                                }
+        
+                                                                echo "<option value=\"$codigoEstado\" $selected>$nomeEstado</option>\n";
                                                             }
-													        ?>
+                                                            ?>
                                                         </select>
                                                     </div>
                                                 </div>
