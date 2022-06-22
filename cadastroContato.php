@@ -1,5 +1,17 @@
 <?php
-    include "conectaBanco.php";
+    session_start();
+
+    $verificaUsuarioLogado = $_SESSION['verificaUsuarioLogado'];
+
+    if (!$verificaUsuarioLogado){
+        header("Location: index.php?codMsg=003");
+    } else {
+        include "conectaBanco.php";
+        include "common/formataData.php";
+        
+        $codigoUsuarioLogado = $_SESSION['codigoUsuarioLogado'];
+        $nomeUsuarioLogado = $_SESSION['nomeUsuarioLogado'];
+    }
 ?>
 
 <!DOCTYPE html>
@@ -18,6 +30,7 @@
     <script src="js/messages_pt_BR.js"></script>
     <script src="js/dateITA.js"></script>
     <script src="js/jquery.mask.js"></script>
+
     <style>
         html {
             height: 100%;
@@ -78,6 +91,9 @@
                     <input class="form-control mr-sm-2" type="search" name="busca" placeholder="Pesquisar">
                     <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Pesquisar</button>
                 </form>
+                <span class="navbar-text ml-4">
+                        Olá <b><?= $nomeUsuarioLogado ?></b>, seja bem-vindo(a)!
+                    </span>
             </div>
         </div>
     </nav>
@@ -86,12 +102,184 @@
             <div class="row">
                 <div class="col-sm"></div>
                 <div class="col-sm-12">
+                    <?php
+                            $flagErro = False;
+                            $flagSucesso = False;
+                            $mostrarMensagem = False;
+
+                            $dadosContato = array('codigoContato', 'nomeContato', 'nascimentoContato', 'sexoContato', 'mailContato', 'fotoContato', 'fotoAtualContato', 'telefone1Contato', 'telefone2Contato', 'telefone3Contato', 'telefone4Contato', 'logradouroContato', 'complementoContato', 'bairroContato', 'estadoContato', 'cidadeContato');
+
+                            foreach($dadosContato as $campo){
+                                $$campo = "";
+                            }
+
+                        if (isset($_POST['codigoContato'])) { //forme submetido (salvar)
+                            $codigoContato = $_POST['codigoContato'];
+                            $nomeContato = addslashes($_POST['nomeContato']);
+                            $nascimentoContato = $_POST['nascimentoContato'];
+
+                            if (isset($_POST['sexoContato'])) {
+                                $sexoContato = $_POST['sexoContato'];
+                            } else {
+                                $sexoContato = "";
+                            }
+
+                            $mailContato = $_POST['mailContato'];
+                            $fotoContato = $_FILES['fotoContato'];
+                            $fotoAtualContato = $_POST['fotoAtualContato'];
+                            $telefone1Contato = $_POST['telefone1Contato'];
+                            $telefone2Contato = $_POST['telefone2Contato'];
+                            $telefone3Contato = $_POST['telefone3Contato'];
+                            $telefone4Contato = $_POST['telefone4Contato'];
+                            $logradouroContato = addslashes( $_POST['logradouroContato']);
+                            $complementoContato = addslashes( $_POST['complementoContato']);
+                            $bairroContato = addslashes( $_POST['bairroContato']);
+                            $estadoContato = $_POST['estadoContato'];
+                            $cidadeContato  = $_POST['cidadeContato'];
+
+
+                            $telefonesContato = array($telefone1Contato, $telefone2Contato, $telefone3Contato, $telefone4Contato);
+
+                            $telefonesFiltradosContato = array_filter($telefonesContato);
+                            $telefonesValidadosContato = preg_grep('/^\(\d{2}\)\s\d{4,5}\-\d{4}$/', $telefonesContato);
+
+                            if ($telefonesFiltradosContato === $telefonesValidadosContato){
+                                $erroTelefones = False;
+                            } else {
+                                $erroTelefones = True;
+                            }
+
+                            if (empty($nomeContato) || empty($sexoContato) || empty($mailContato) || empty($telefone1Contato) || 
+                                empty($logradouroContato) || empty($complementoContato) || empty($bairroContato) || empty($cidadeContato) || 
+                                empty($estadoContato)) {
+                            
+                                $flagErro = True;
+                                $mensagemAcao = "Preencha todos os campos obrigatórios (*). ";
+
+                            } else if (strlen($nomeContato) < 5) {
+                                $flagErro = True;
+                                $mensagemAcao = "Informe a quantidade mínima de caracteres para cada campo: Nome (5).";
+                            } else if (!empty($nascimentoContato) && !preg_match('/^(0?[1-9]|[1,2][0-9]|[3[0,1])[\/](0?[1-9]|1[0,1,2])[\/]\d{4}$/', $nascimentoContato)) { //validação do nascimento
+                                $flagErro = True;
+                                $mensagemAcao = "A data de nascimento do contato deve ser no formato DD/MM/AAAA.";                               
+                            } else if (!preg_match("/^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/", $mailContato)){
+                                $flagErro = True;
+                                $mensagemAcao = "Verifique o e-mail informado.";
+
+                            } else if ($fotoContato['error'] != 4) {
+                                if (!in_array($fotoContato['type'], array('image/jpg', 'image/jpeg', 'image/png', )) || $fotoContato['size'] > 2000000) {
+
+                                    $flagErro = True;
+                                    $mensagemAcao = "A foto do contato deve ser nos formatos JPG, JPEG ou PNG e ter no máximo 2MB.";
+
+                                } else {
+                                   list($larguraFoto, $alturaFoto) = getimagesize($fotoContato['tmp_name']);
+
+                                   if ($larguraFoto > 500 || $alturaFoto > 200) {
+                                    $flagErro = True;
+                                    $mensagemAcao = "As dimensões da foto devem ser no máximo 500x200 pixels.";
+                                   }
+                                }
+
+                            } else if ($erroTelefones) {
+                                $flagErro = True;
+                                $mensagemAcao = "Os campos de telefone devem ser no formato (xx) xxxxx-xxxx. ";
+                            
+                            }
+
+
+                            if (!$flagErro) {
+                                if (empty($codigoContato)) { // inclusão de contato
+                                    $sqlContato = "INSERT INTO contatos (codigoUsuario, nomeContato, nascimentoContato, sexoContato, mailContato, fotoContato, telefone1Contato, telefone2Contato, telefone3Contato, telefone4Contato, logradouroContato, complementoContato, bairroContato, cidadeContato, estadoContato) VALUES (:codigoUsuario, :nomeContato, :nascimentoContato, :sexoContato, :mailContato, :fotoContato, :telefone1Contato, :telefone2Contato, :telefone3Contato, :telefone4Contato, :logradouroContato, :complementoContato, :bairroContato, :cidadeContato, :estadoContato)";
+
+                                    $sqlContatoST = $conexao->prepare($sqlContato);
+
+                                    $sqlContatoST->bindValue(':codigoUsuario', $codigoUsuarioLogado);
+                                    $sqlContatoST->bindValue(':nomeContato', $nomeContato);
+
+                                    $nascimentoContato = formataData($nascimentoContato);
+                                    $sqlContatoST->bindValue(':nascimentoContato', $nascimentoContato);
+
+
+                                    $sqlContatoST->bindValue(':sexoContato', $sexoContato);
+                                    $sqlContatoST->bindValue(':mailContato', $mailContato);
+                                    $sqlContatoST->bindValue(':telefone1Contato', $telefone1Contato);
+                                    $sqlContatoST->bindValue(':telefone2Contato', $telefone2Contato);
+                                    $sqlContatoST->bindValue(':telefone3Contato', $telefone3Contato);
+                                    $sqlContatoST->bindValue(':telefone4Contato', $telefone4Contato);
+                                    $sqlContatoST->bindValue(':logradouroContato', $logradouroContato);
+                                    $sqlContatoST->bindValue(':complementoContato', $complementoContato);
+                                    $sqlContatoST->bindValue(':bairroContato', $bairroContato);
+                                    $sqlContatoST->bindValue(':cidadeContato', $cidadeContato);
+                                    $sqlContatoST->bindValue('estadoContato:', $estadoContato);
+
+                                    if ($fotoContato['error'] == 0) {
+                                        $extensaoFoto = pathinfo($fotoContato['name'], PATHINFO_EXTENSION);
+                                        $nomeFoto = "fotos/" . strtotime(date("Y-m-d H:i:s")) . $codigoUsuarioLogado . '.' . $extensaoFoto;
+
+                                        if (copy($fotoContato['tmp_name'], $nomeFoto)) {
+                                            $fotoEnviada = True;
+                                        } else {
+                                            $fotoEnviada = False;
+                                        }
+
+                                        $sqlContatoST->bindValue(':fotoContato', $nomeFoto);
+                                    } else {
+                                        $sqlContatoST->bindValue(':fotoContato', '');
+                                        $fotoEnviada = False;
+                                    }
+                                    if ($sqlContatoST->execute()) {
+                                        $flagSucesso = True;
+                                        $mensagemAcao = "Novo contato cadastrado com sucesso.";
+                                    } else {
+                                        $flagErro = True;
+                                        $mensagemAcao = "Erro ao cadastrar o novo contato. Código do erro: $sqlContatoST->errorCode( ).";
+
+                                        $nascimentoContato = formataData($nascimentoContato);
+
+                                        if ($fotoEnviada) {
+                                            unlink($nomeFoto);
+                                        }
+                                    }
+                                    
+                                    
+                                    }
+
+                                } else { //edição de contato existente
+
+                            }
+
+                        } else { //carregar dados
+                            if(isset($_GET['codigoContato'])) { // abrir contato existente
+
+                            } 
+                        }
+
+                        if ($flagErro) {
+                            $classeMensagem = "alert-danger";
+                            $mostrarMensagem = True;
+                        }   else if ($flagSucesso) {
+                            $classeMensagem = "alert-success";
+                            $mostrarMensagem = True;
+                        }
+
+                        if ($mostrarMensagem) {
+                            echo "<div class=\"alert $classeMensagem alert-dismissible fade show my-5\" role=\"alert\">
+                                    $mensagemAcao
+                                    <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Fechar\">
+                                        <span aria-hidden=\"true\">&times;</span>
+                                    </button>
+                                </div>";
+                        }
+                    ?>
                     <div class="card border-primary my-5">
                         <div class="card-header bg-primary text-white">
                             <h5>Cadastro de contato</h5>
                         </div>
                         <div class="card-body">
-                            <form id="cadastroContato" method="post" action="cadastroContato.php">
+                            <form id="cadastroContato" method="post" enctype="multipart/form-data" action="cadastroContato.php">
+                                <input type ="hidden" name="codigoContato" value="">
+                                <input type ="hidden" name="fotoAtualContato" value="">
                                 <h5 class="text-primary">Dados pessoais</h5>
                                 <hr>
                                 <div class="row">
@@ -99,15 +287,15 @@
                                         <div class="row">
                                             <div class="col-sm">
                                                 <div class="form-group">
-                                                    <label for="nomeContato">Nome</label>
+                                                    <label for="nomeContato">Nome*</label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <div class="input-group-text">
                                                                 <i class="bi-person-circle"></i>
                                                             </div>
                                                         </div>
-                                                        <input class="form-control" type="text" name="nameContato"
-                                                            id="nomeContato" placeholder="Digite o nome" required>
+                                                        <input class="form-control" type="text" name="nomeContato"
+                                                            id="nomeContato" placeholder="Digite o nome" value="<?= $nomeContato ?>" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -123,8 +311,7 @@
                                                             </div>
                                                         </div>
                                                         <input class="form-control" type="text" name="nascimentoContato"
-                                                            id="nascimentoContato"
-                                                            placeholder="DD/MM/AAAA">
+                                                            id="nascimentoContato" placeholder="DD/MM/AAAA" value="<?= $nascimentoContato ?>">
                                                     </div>
                                                 </div>
                                             </div>
@@ -132,16 +319,30 @@
                                         <div class="row">
                                             <div class="col-sm">
                                                 <div class="form-group">
-                                                    <label for="sexoContato">Sexo</label>
+                                                    <label for="sexoContato">Sexo*</label>
                                                     <div class="input-group">
                                                         <div class="form-check form-check-inline">
+                                                            <?php
+                                                                if ($sexoContato == 'M'){
+                                                                    $checkedMasculino = 'checked';
+                                                                    $checkedFeminino = '';
+
+                                                                } else if ($sexoContato == 'F'){
+                                                                    $checkedMasculino = '';
+                                                                    $checkedFeminino = 'checked';
+                                                                } else {
+                                                                    $checkedMasculino = '';
+                                                                    $checkedFeminino = '';
+                                                                }
+                                                            ?>
+
                                                             <input class="form-check-input" type="radio"
-                                                                name="sexoContato" id="sexoMasculino" value="masculino">
+                                                                name="sexoContato" id="sexoMasculino" value="M" <?= $checkedMasculino ?>>
                                                             <label class="form-check-label"
                                                                 for="sexoMasculino">Masculino</label>
                                                             &nbsp;
                                                             <input class="form-check-input" type="radio"
-                                                                name="sexoContato" id="sexoFeminino" value="feminino">
+                                                                name="sexoContato" id="sexoFeminino" value="F" <?= $checkedFeminino ?>>
                                                             <label class="form-check-label"
                                                                 for="sexoFeminino">Feminino</label>
                                                         </div>
@@ -152,7 +353,7 @@
                                         <div class="row">
                                             <div class="col-sm">
                                                 <div class="form-group">
-                                                    <label for="mailContato">E-mail</label>
+                                                    <label for="mailContato">E-mail*</label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <div class="input-group-text">
@@ -160,7 +361,7 @@
                                                             </div>
                                                         </div>
                                                         <input class="form-control" type="email" name="mailContato"
-                                                            id="mailContato" placeholder="Digite o e-mail" required>
+                                                            id="mailContato" placeholder="Digite o e-mail" value="<?= $mailContato ?>" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -184,8 +385,6 @@
                                                                 Escolha a foto...
                                                             </label>
                                                         </div>
-
-
                                                     </div>
                                                 </div>
                                             </div>
@@ -199,16 +398,16 @@
                                         <div class="row">
                                             <div class="col-sm">
                                                 <div class="form-group">
-                                                    <label for="telefone1Contato">Telefone</label>
+                                                    <label for="telefone1Contato">Telefone*</label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <div class="input-group-text">
                                                                 <i class="bi-phone"></i>
                                                             </div>
                                                         </div>
-                                                        <input class="form-control mascara-telefone" type="text" name="telefone1Contato"
-                                                            id="telefone1Contato" placeholder="(xx) xxxxx-xxxx"
-                                                            required>
+                                                        <input class="form-control mascara-telefone" type="text"
+                                                            name="telefone1Contato" id="telefone1Contato"
+                                                            placeholder="(xx) xxxxx-xxxx" value="<?= $telefone1Contato ?>" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -223,9 +422,9 @@
                                                                 <i class="bi-phone"></i>
                                                             </div>
                                                         </div>
-                                                        <input class="form-control mascara-telefone" type="text" name="telefone2Contato"
-                                                            id="telefone2Contato" placeholder="(xx) xxxxx-xxxx"
-                                                            required>
+                                                        <input class="form-control mascara-telefone" type="text"
+                                                            name="telefone2Contato" id="telefone2Contato"
+                                                            placeholder="(xx) xxxxx-xxxx" value="<?= $telefone2Contato ?>">
                                                     </div>
                                                 </div>
                                             </div>
@@ -242,8 +441,9 @@
                                                                 <i class="bi-phone"></i>
                                                             </div>
                                                         </div>
-                                                        <input class="form-control mascara-telefone" type="text" name="telefone3Contato"
-                                                            id="telefone3Contato" placeholder="(xx) xxxxx-xxxx">
+                                                        <input class="form-control mascara-telefone" type="text"
+                                                            name="telefone3Contato" id="telefone3Contato"
+                                                            placeholder="(xx) xxxxx-xxxx" value="<?= $telefone3Contato ?>">
                                                     </div>
                                                 </div>
                                             </div>
@@ -258,8 +458,9 @@
                                                                 <i class="bi-phone"></i>
                                                             </div>
                                                         </div>
-                                                        <input class="form-control mascara-telefone" type="text" name="telefone4Contato"
-                                                            id="telefone4Contato" placeholder="(xx) xxxxx-xxxx">
+                                                        <input class="form-control mascara-telefone" type="text"
+                                                            name="telefone4Contato" id="telefone4Contato"
+                                                            placeholder="(xx) xxxxx-xxxx" value="<?= $telefone4Contato ?>">
                                                     </div>
                                                 </div>
                                             </div>
@@ -273,7 +474,7 @@
                                         <div class="row">
                                             <div class="col-sm">
                                                 <div class="form-group">
-                                                    <label for="logradouroContato">Logradouro</label>
+                                                    <label for="logradouroContato">Logradouro*</label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <div class="input-group-text">
@@ -282,7 +483,7 @@
                                                         </div>
                                                         <input class="form-control" type="text" name="logradouroContato"
                                                             id="logradouroContato"
-                                                            placeholder="Rua, Avenida, Travessa e Outros" required>
+                                                            placeholder="Rua, avenida, travessa e outros" value= "<?= $logradouroContato ?>" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -294,7 +495,7 @@
                                         <div class="row">
                                             <div class="col-sm">
                                                 <div class="form-group">
-                                                    <label for="complementoContato">Complemento</label>
+                                                    <label for="complementoContato">Complemento*</label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <div class="input-group-text">
@@ -303,7 +504,7 @@
                                                         </div>
                                                         <input class="form-control" type="text"
                                                             name="complementoContato" id="complementoContato"
-                                                            placeholder="Numero, Quadra, Lote e Outros" required>
+                                                            placeholder="Número, quadra, lote e outros" value= "<?= $complementoContato ?>" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -311,30 +512,30 @@
                                         <div class="row">
                                             <div class="col-sm">
                                                 <div class="form-group">
-                                                    <label for="estadoContato">Estado</label>
+                                                    <label for="estadoContato">Estado*</label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <div class="input-group-text">
-                                                                <i class="bi-globe"></i>
+                                                                <i class="bi-grid"></i>
                                                             </div>
                                                         </div>
                                                         <select class="form-control" name="estadoContato"
                                                             id="estadoContato" required>
-                                                            <option value="">Escolha o Estado</option>
+                                                            <option value="">Escolha o estado</option>
                                                             <?php
-													        $sqlEstados = "SELECT codigoEstado, nomeEstado FROM estados";
+                                                                $sqlEstados = "SELECT codigoEstado, nomeEstado FROM estados";
+                                                                $resultadosEstados = $conexao->query($sqlEstados)->fetchAll();
 
-													        $resultadoEstados = $conexao->query($sqlEstados)->fetchAll();
+                                                                foreach($resultadosEstados as list($codigoEstado, $nomeEstado)){
+                                                                    if ($estadoContato == $codigoEstado) {
+                                                                        $selected = 'selected';
+                                                                    } else {
+                                                                        $selected = '';
+                                                                    }
 
-													        foreach($resultadoEstados as list($codigoEstado, $nomeEstado)) {
-                                                                if ($estadoContato == $estadoContato) {
-                                                                    $selected = 'selected';
-                                                                } else {
-                                                                    $selected = '';
+
+                                                                    echo "<option value=\"$codigoEstado\" $selected>$nomeEstado</option>\n";
                                                                 }
-        
-                                                                echo "<option value=\"$codigoEstado\" $selected>$nomeEstado</option>\n";
-                                                            }
                                                             ?>
                                                         </select>
                                                     </div>
@@ -346,7 +547,7 @@
                                         <div class="row">
                                             <div class="col-sm">
                                                 <div class="form-group">
-                                                    <label for="bairroContato">Bairro</label>
+                                                    <label for="bairroContato">Bairro*</label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <div class="input-group-text">
@@ -354,7 +555,7 @@
                                                             </div>
                                                         </div>
                                                         <input class="form-control" type="text" name="bairroContato"
-                                                            id="bairroContato" placeholder="Digite o Bairro" required>
+                                                            id="bairroContato" placeholder="Digite o Bairro" value= "<?= $bairroContato ?>"required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -362,7 +563,7 @@
                                         <div class="row">
                                             <div class="col-sm">
                                                 <div class="form-group">
-                                                    <label for="cidadeContato">Cidade</label>
+                                                    <label for="cidadeContato">Cidade*</label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <div class="input-group-text">
@@ -381,7 +582,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-sm text-right">
-                                        <button type="submit" class="btn btn-primary">Cadastar</button>
+                                        <button type="submit" class="btn btn-outline-primary">Salvar</button>
                                     </div>
                                 </div>
                             </form>
@@ -415,6 +616,7 @@
             </div>
         </div>
     </div>
+</body>
     <script>
         jQuery.validator.setDefaults({
             errorElement: 'span',
@@ -424,6 +626,7 @@
             },
             highlight: function (element, errorClass, validClass) {
                 $(element).addClass('is-invalid');
+                
             },
             unhighlight: function (element, errorClass, validClass) {
                 $(element).removeClass('is-invalid');
@@ -446,8 +649,8 @@
             $("#nascimentoContato").mask("00/00/0000");
 
             var SPMaskBehavior = function (val) {
-                    return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00009';
-                },
+                return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00009';
+            },
                 spOptions = {
                     onKeyPress: function (val, e, field, options) {
                         field.mask(SPMaskBehavior.apply({}, arguments), options);
@@ -457,11 +660,17 @@
             $('.mascara-telefone').mask(SPMaskBehavior, spOptions);
 
             $("#estadoContato").change(function () {
-				$("#cidadeContato").html('<option>Carregando...</option>');
-				$("#cidadeContato").load('listaCidades.php?codigoEstado=' + $("#estadoContato").val());
-			});
+                $("#cidadeContato").html('<option> Carregando...</option>');
+                $("#cidadeContato").load('listaCidades.php?codigoEstado=' + $("#estadoContato").val());
+            });
+
+            <?php
+                if (!empty($estadoContato) && !empty($cidadeContato)) {
+                    echo "$(\"#cidadeContato\").html('<option> Carregando...</option>');
+                    $(\"#cidadeContato\").load('listaCidades.php?codigoEstado= " .  $estadoContato . "&codigoCidade" . $cidadeContato. "');";
+                }
+            ?>
         });
     </script>
-</body>
 
 </html>
