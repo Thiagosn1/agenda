@@ -1,3 +1,18 @@
+<?php
+    session_start();
+
+    $verificaUsuarioLogado = $_SESSION['verificaUsuarioLogado'];
+
+    if (!$verificaUsuarioLogado){
+        header("Location: index.php?codMsg=003");
+    } else{
+        include "conectaBanco.php";
+        
+        $nomeUsuarioLogado = $_SESSION['nomeUsuarioLogado'];
+        $codigoUsuarioLogado = $_SESSION['codigoUsuarioLogado'];
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -13,6 +28,7 @@
     <script src="js/jquery.validate.js"></script>
     <script src="js/messages_pt_BR.js"></script>
     <script src="js/pwstrength-bootstrap.js"></script>
+
     <style>
         html {
             height: 100%;
@@ -69,6 +85,9 @@
                     <input class="form-control mr-sm-2" type="search" name="busca" placeholder="Pesquisar">
                     <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Pesquisar</button>
                 </form>
+                <span class="navbar-text ml-4">
+                        Olá <b><?= $nomeUsuarioLogado ?></b>, seja bem-vindo(a)!
+                    </span>
             </div>
         </div>
     </nav>
@@ -76,14 +95,134 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm"></div>
-                <div class="col-sm-10">
+                <div class="col-sm-12">
+                <?php
+                $flagErro = False;
+
+                    if (isset($_POST['acao'])){
+                        $acao = $_POST['acao'];
+
+                        if ($acao == "salvar"){
+                            $nomeUsuario = $_POST['nomeUsuario'];
+                            $mailUsuario = $_POST['mailUsuario'];
+                            $mail2Usuario = $_POST['mail2Usuario'];
+                            $senhaAtualUsuario = $_POST['senhaAtualUsuario'];
+                            $senhaUsuario = $_POST['senhaUsuario'];
+                            $senha2Usuario = $_POST['senha2Usuario'];
+
+                            if (!empty($nomeUsuario) && !empty($mailUsuario) && !empty($mail2Usuario) && !empty($senhaAtualUsuario) 
+                                && !empty($senhaUsuario) && !empty($senha2Usuario)){
+                                
+                                if ($mailUsuario == $mail2Usuario && $senhaUsuario == $senha2Usuario){
+
+                                    if (strlen($nomeUsuario) >= 5 && strlen($senhaUsuario) >= 8){
+                                        $senhaAtualUsuarioMD5 = md5($senhaAtualUsuario);
+                                        
+                                            $sqlSenhaUsuario = "SELECT codigoUsuario FROM usuarios WHERE codigoUsuario=:codigoUsuario AND senhaUsuario=:senhaUsuario";
+
+                                            $sqlSenhaUsuarioST = $conexao->prepare($sqlSenhaUsuario);
+
+                                            $sqlSenhaUsuarioST->bindValue(':codigoUsuario', $codigoUsuarioLogado);
+                                            $sqlSenhaUsuarioST->bindValue(':senhaUsuario', $senhaAtualUsuarioMD5);
+
+                                            $sqlSenhaUsuarioST->execute();
+                                            $quantidadeUsuarios = $sqlSenhaUsuarioST->rowCount();
+
+                                            if ($quantidadeUsuarios == 1){
+                                                $sqlUsuarios = "SELECT codigoUsuario FROM usuarios WHERE mailUsuario=:mailUsuario AND codigoUsuario<>:codigoUsuario";
+
+                                                $sqlUsuariosST = $conexao->prepare($sqlUsuarios);
+
+                                                $sqlUsuariosST->bindValue(':mailUsuario', $mailUsuario);
+                                                $sqlUsuariosST->bindValue(':codigoUsuario', $codigoUsuarioLogado);
+
+                                                $sqlUsuariosST->execute();
+                                                $quantidadeUsuarios = $sqlUsuariosST->rowCount();
+
+                                                if ($quantidadeUsuarios == 0) {
+                                                    $senhaUsuarioMD5 = md5($senhaUsuario);
+
+                                                    if ($senhaAtualUsuarioMD5 == $senhaUsuario) {
+                                                        $senhaUsuarioMD5 = $senhaAtualUsuarioMD5;
+                                                    }
+                    
+                                                    $sqlEditarUsuario = "UPDATE usuarios SET nomeUsuario=:nomeUsuario, mailUsuario=:mailUsuario,senhaUsuario=:senhausuario WHERE codigoUsuario=:codigoUsuario";
+                    
+                                                    $sqlEditarUsuarioST = $conexao->prepare($sqlEditarUsuario);
+                                                    $sqlEditarUsuarioST->bindValue(':codigoUsuario', $codigoUsuarioLogado);
+                                                    $sqlEditarUsuarioST->bindValue(':nomeUsuario', $nomeUsuario);
+                                                    $sqlEditarUsuarioST->bindValue(':mailUsuario', $mailUsuario);
+                                                    $sqlEditarUsuarioST->bindValue(':senhaUsuario', $senhaUsuarioMD5);
+                    
+                                                    if ($sqlEditarUsuarioST->execute()) {
+                                                        $mensagemAcao = "Cadastro de usuário editado com sucesso.";
+                                                        
+                                                    } else {
+                                                        $flagErro = True;
+                                                        $mensagemAcao = "Código erro: " . $sqlNovoUsuarioST->errorCode();
+                                                    }
+                                                } else {    
+                                                    $flagErro = True;    
+                                                    $mensagemAcao = "E-mail já cadastrado para outro usuário.";
+                                                }
+
+                                            } else{
+                                                $flagErro = True;
+                                                $mensagemAcao = "A senha atual informada está incorreta.";
+
+                                            }
+                                    } else {
+                                        $flagErro = True;
+                                        $mensagemAcao = "Informe a quantidade mínima de caracteres para cada campo: Nome (5), Senha (8).";
+                                    }
+
+                                } else {
+                                    $flagErro = True;
+                                    $mensagemAcao = "Os campos de confirmação de e-mail e senha devem ser preenchidos com os respectivos valores.";
+                                }
+
+                            } else {
+                                $flagErro = True;
+                                $mensagemAcao = "Preencha todos os campos obrigatórios (*).";
+                            }
+                           
+                            if (!$flagErro) {
+                                $classeMensagem = "alert-success";
+                            } else{
+                                $classeMensagem = "alert-danger";
+                            }
+
+                            echo "<div class=\"alert $classeMensagem alert-dismissible fade show\" role=\"alert\">
+                                    $mensagemAcao
+                                    <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Fechar\">
+                                        <span aria-hidden=\"true\">&times;</span>
+                                    </button>
+                                </div>";
+                        }
+                    } else {
+                        $sqlUsuario = "SELECT nomeUsuario, mailUsuario, senhaUsuario FROM usuarios WHERE codigoUsuario=:codigoUsuario";
+
+                        $sqlUsuarioST = $conexao->prepare($sqlUsuario);
+
+                        $sqlUsuarioST->bindValue(':codigoUsuario', $codigoUsuarioLogado);
+
+                        $sqlUsuarioST->execute();
+
+                        $resultadoUsuario = $sqlUsuarioST->fetchALL();
+
+                        list($nomeUsuario, $mailUsuario, $senhaUsuario) = $resultadoUsuario[0];
+                        print_r($resultadoUsuario);
+
+                        $mail2Usuario = $mailUsuario;
+                        $senha2Usuario = $senhaUsuario;
+                    }
+                    ?>
                     <div class="card border-primary">
                         <div class="card-header bg-primary text-white">
-                            <h5>Cadastro de novo usuário</h5>
-
+                            <h5>Alterar dados</h5>
                         </div>
                         <div class="card-body">
-                            <form id="novoUsuario" method="post" action="listaContatos.php">
+                            <form id="novoUsuario" method="post" action="alterarDados.php">
 								<input type="hidden" name="acao" value="salvar">
 								<div class="form-group">
 									<label for="nomeUsuario">Nome*</label>
@@ -94,7 +233,7 @@
 											</div>
 										</div>
 										<input type="text" class="form-control" id="nomeUsuario" name="nomeUsuario"
-											placeholder="Digite o seu nome" required>
+											placeholder="Digite seu nome" value="<?= $nomeUsuario ?>" required>
 									</div>
 								</div>
 								<div class="row">
@@ -108,7 +247,7 @@
 													</div>
 												</div>
 												<input type="email" class="form-control" id="mailUsuario"
-													name="mailUsuario" placeholder="Digite o seu e-mail" required>
+													name="mailUsuario" placeholder="Digite seu e-mail" value="<?= $mailUsuario ?>" required>
 											</div>
 										</div>
 									</div>
@@ -122,7 +261,7 @@
 													</div>
 												</div>
 												<input type="email" class="form-control" id="mail2Usuario"
-													name="mail2Usuario" placeholder="Repita o seu e-mail" required>
+													name="mail2Usuario" placeholder="Repita seu e-mail" value="<?= $mail2Usuario ?>" required>
 											</div>
 										</div>
 									</div>
@@ -139,7 +278,7 @@
 													</div>
 												</div>
 												<input type="password" class="form-control" id="senhaAtualUsuario"
-												name="senhaAtualUsuario" placeholder="Digite a sua senha atual"  required>
+												name="senhaAtualUsuario" placeholder="Digite sua senha atual" required>
 											</div>
 										</div>
 									</div>
@@ -156,7 +295,7 @@
 													</div>
 												</div>
 												<input type="password" class="form-control" id="senhaUsuario"
-													name="senhaUsuario" placeholder="Digite a sua nova senha" required>
+													name="senhaUsuario" placeholder="Digite sua nova senha" value="<?= $senhaUsuario ?>" required>
 											</div>
 										</div>
 									</div>
@@ -170,7 +309,7 @@
 													</div>
 												</div>
 												<input type="password" class="form-control" id="senha2Usuario"
-													name="senha2Usuario" placeholder="Repita a sua nova senha" required>
+													name="senha2Usuario" placeholder="Repita sua nova senha" value="<?= $senha2Usuario ?>" required>
 											</div>
 										</div>
 									</div>
@@ -181,7 +320,7 @@
 								</div>
 								<div class="row">
 									<div class="col-sm text-right">
-										<button input type="submit" class="btn btn-info">Salvar</button>
+										<button input type="submit" class="btn btn-outline-info">Salvar</button>
 									</div>
 								</div>
 							</form>
@@ -215,6 +354,7 @@
             </div>
         </div>
     </div>
+</body>
     <script>
         jQuery.validator.setDefaults({
             errorElement: 'span',
@@ -230,20 +370,19 @@
             }
         });
         $(document).ready(function () {
-
             $("#novoUsuario").validate({
                 rules: {
                     nomeUsuario: {
-                        minlenght: 5
+                        minlength: 5
                     },
                     mail2Usuario: {
-                        equalTo: "#mailUsuario"
+                        equalTo:"#mailUsuario"
                     },
                     senha2Usuario: {
                         equalTo: "#senhaUsuario"
                     },
                     senhaUsuario: {
-                        minlenght: 8
+                        minlength: 8
                     }
                 }
             });
@@ -261,6 +400,4 @@
             });
         });
     </script>
-</body>
-
 </html>
