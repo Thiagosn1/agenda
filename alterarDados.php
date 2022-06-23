@@ -210,7 +210,7 @@ if (!$verificaUsuarioLogado) {
                         $resultadoUsuario = $sqlUsuarioST->fetchALL();
 
                         list($nomeUsuario, $mailUsuario, $senhaUsuario) = $resultadoUsuario[0];
-                        print_r($resultadoUsuario);
+                       # print_r($resultadoUsuario);
 
                         $mail2Usuario = $mailUsuario;
                         $senha2Usuario = $senhaUsuario;
