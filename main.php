@@ -1,13 +1,13 @@
 <?php
-    session_start();
+session_start();
 
-    $verificaUsuarioLogado = $_SESSION['verificaUsuarioLogado'];
+$verificaUsuarioLogado = $_SESSION['verificaUsuarioLogado'];
 
-    if (!$verificaUsuarioLogado){
-        header("Location: index.php?codMsg=003");
-    } else{
-        $nomeUsuarioLogado = $_SESSION['nomeUsuarioLogado'];
-    }
+if (!$verificaUsuarioLogado) {
+    header("Location: index.php?codMsg=003");
+} else {
+    $nomeUsuarioLogado = $_SESSION['nomeUsuarioLogado'];
+}
 ?>
 
 <!DOCTYPE html>
@@ -48,8 +48,7 @@
             <div class="collapse navbar-collapse" id="navbar">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                            id="menuCadastros" aria-haspopup="true" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" id="menuCadastros" aria-haspopup="true" aria-expanded="false">
                             <i class="bi-card-list"></i> Cadastros</a>
                         <div class="dropdown-menu" aria-labelledby="menuCadastros">
                             <a class="dropdown-item" href="cadastroContato.php">
@@ -59,8 +58,7 @@
                         </div>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" id="menuConta"
-                            aria-haspopup="true" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" id="menuConta" aria-haspopup="true" aria-expanded="false">
                             <i class="bi-gear-fill"></i> Minha conta</a>
                         <div class="dropdown-menu" aria-labelledby="menuConta">
                             <a class="dropdown-item" href="alterarDados.php">
@@ -84,8 +82,7 @@
             </div>
         </div>
     </nav>
-    <div class="modal fade" id="modalSobreAplicacao" tabindex="-1" role="dialog" aria-labelledby="sobreAplicacao"
-        aria-hidden="true">
+    <div class="modal fade" id="modalSobreAplicacao" tabindex="-1" role="dialog" aria-labelledby="sobreAplicacao" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
