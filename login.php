@@ -25,7 +25,7 @@
             list($codigoUsuario, $nomeUsuario) = $resultadoUsuario[0];
 
             $_SESSION['verificaUsuarioLogado'] = True;
-            $SESSION['codigoUsuarioLogado'] = $codigoUsuario;
+            $_SESSION['codigoUsuarioLogado'] = $codigoUsuario;
             $nomeCompletoUsuario = explode(' ', $nomeUsuario);
             $_SESSION['nomeUsuarioLogado'] = $nomeCompletoUsuario[0];
 
