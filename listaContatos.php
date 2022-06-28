@@ -114,13 +114,16 @@
                                 </thead>
                                 <tbody>
                                     <?php
+                                        //$busca = "";
                                         if (isset($_GET['busca'])){
                                             $busca = '%' .  $_GET['busca'] . '%';
                                         } else {
                                             $busca = '%%';
                                         }
 
-                                        $sqlContatos = "SELECT codigoContato, nomeContato, mailContato, telefone1Contato FROM contatos WHERE    codigoUsuario=:codigoUsuario AND nomeContato LIKE %:busca% ORDER BY nomeContato";
+                                        $sqlContatos = "SELECT codigoContato, nomeContato, mailContato, telefone1Contato FROM 
+                                                    contatos WHERE codigoUsuario=:codigoUsuario AND nomeContato LIKE :busca 
+                                                    ORDER BY nomeContato";
 
                                         $sqlContatosST = $conexao->prepare($sqlContatos);
                                         $sqlContatosST->bindValue(':codigoUsuario', $codigoUsuarioLogado);
@@ -151,10 +154,10 @@
                                                             data-target=\"#visualizarContato\" data-whatever=\"$codigoContato\">
                                                             <i class=\"bi-eye\"></i> Visualizar
                                                         </a>
-                                                        <a class=\"dropdown-item\" href=\"cadastroContato.php\">
+                                                        <a class=\"dropdown-item\" href=\"cadastroContato.php?codigoContato=$codigoContato\">
                                                             <i class=\"bi-pencil\"></i> Editar
                                                         </a>
-                                                        <a class=\"dropdown-item\" href=\"#\">
+                                                        <a class=\"dropdown-item\" href=\"excluirContato.php?codigoContato=$codigoContato\"    onclick=\"return confirm('Deseja excluir esse contato?')\">
                                                             <i class=\"bi-trash\"></i> Excluir
                                                         </a>
                                                     </div>
