@@ -1,16 +1,16 @@
 <?php
-    session_start();
+session_start();
 
-    $verificaUsuarioLogado = $_SESSION['verificaUsuarioLogado'];
+$verificaUsuarioLogado = $_SESSION['verificaUsuarioLogado'];
 
-    if (!$verificaUsuarioLogado){
-        header("Location: index.php?codMsg=003");
-    } else{
-        include 'conectaBanco.php';
+if (!$verificaUsuarioLogado) {
+    header("Location: index.php?codMsg=003");
+} else {
+    include 'conectaBanco.php';
 
-        $nomeUsuarioLogado = $_SESSION['nomeUsuarioLogado'];
-        $codigoUsuarioLogado = $_SESSION['codigoUsuarioLogado'];
-    }
+    $nomeUsuarioLogado = $_SESSION['nomeUsuarioLogado'];
+    $codigoUsuarioLogado = $_SESSION['codigoUsuarioLogado'];
+}
 ?>
 
 <!DOCTYPE html>
@@ -55,8 +55,7 @@
             <div class="collapse navbar-collapse" id="navbar">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                            id="menuCadastros" aria-haspopup="true" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" id="menuCadastros" aria-haspopup="true" aria-expanded="false">
                             <i class="bi-card-list"></i> Cadastros</a>
                         <div class="dropdown-menu" aria-labelledby="menuCadastros">
                             <a class="dropdown-item" href="cadastroContato.php">
@@ -66,8 +65,7 @@
                         </div>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" id="menuConta"
-                            aria-haspopup="true" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" id="menuConta" aria-haspopup="true" aria-expanded="false">
                             <i class="bi-gear-fill"></i> Minha conta</a>
                         <div class="dropdown-menu" aria-labelledby="menuConta">
                             <a class="dropdown-item" href="alterarDados.php">
@@ -86,8 +84,8 @@
                     <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Pesquisar</button>
                 </form>
                 <span class="navbar-text ml-4">
-                        Olá <b><?= $nomeUsuarioLogado ?></b>, seja bem-vindo(a)!
-                    </span>
+                    Olá <b><?= $nomeUsuarioLogado ?></b>, seja bem-vindo(a)!
+                </span>
             </div>
         </div>
     </nav>
@@ -114,28 +112,28 @@
                                 </thead>
                                 <tbody>
                                     <?php
-                                        //$busca = "";
-                                        if (isset($_GET['busca'])){
-                                            $busca = '%' .  $_GET['busca'] . '%';
-                                        } else {
-                                            $busca = '%%';
-                                        }
+                                    //$busca = "";
+                                    if (isset($_GET['busca'])) {
+                                        $busca = '%' .  $_GET['busca'] . '%';
+                                    } else {
+                                        $busca = '%%';
+                                    }
 
-                                        $sqlContatos = "SELECT codigoContato, nomeContato, mailContato, telefone1Contato FROM 
+                                    $sqlContatos = "SELECT codigoContato, nomeContato, mailContato, telefone1Contato FROM 
                                                     contatos WHERE codigoUsuario=:codigoUsuario AND nomeContato LIKE :busca 
                                                     ORDER BY nomeContato";
 
-                                        $sqlContatosST = $conexao->prepare($sqlContatos);
-                                        $sqlContatosST->bindValue(':codigoUsuario', $codigoUsuarioLogado);
-                                        $sqlContatosST->bindValue(':busca', $busca);
+                                    $sqlContatosST = $conexao->prepare($sqlContatos);
+                                    $sqlContatosST->bindValue(':codigoUsuario', $codigoUsuarioLogado);
+                                    $sqlContatosST->bindValue(':busca', $busca);
 
-                                        $sqlContatosST->execute();
-                                        $quantidadeContatos = $sqlContatosST->rowCount();
+                                    $sqlContatosST->execute();
+                                    $quantidadeContatos = $sqlContatosST->rowCount();
 
-                                        if ($quantidadeContatos > 0) {
-                                            $resultadoContatos = $sqlContatosST->fetchALL();
+                                    if ($quantidadeContatos > 0) {
+                                        $resultadoContatos = $sqlContatosST->fetchALL();
 
-                                            foreach($resultadoContatos as list($codigoContato, $nomeContato, $mailContato, $telefone1Contato)){
+                                        foreach ($resultadoContatos as list($codigoContato, $nomeContato, $mailContato, $telefone1Contato)) {
                                             echo "<tr>
                                             <th scope=\"row\">$codigoContato</th>
                                             <td>$nomeContato</td>
@@ -164,8 +162,8 @@
                                                 </div>
                                             </td>
                                         </tr>";
-                                            }
                                         }
+                                    }
                                     ?>
                                 </tbody>
                             </table>
@@ -176,8 +174,7 @@
             </div>
         </div>
     </div>
-    <div class="modal  fade" id="modalSobreAplicacao" tabindex="-1" role="dialog" aria-labelledby="sobreAplicacao"
-        aria-hidden="true">
+    <div class="modal  fade" id="modalSobreAplicacao" tabindex="-1" role="dialog" aria-labelledby="sobreAplicacao" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -199,8 +196,7 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="visualizarContato" tabindex="-1" role="dialog" aria-labelledby="visualizarDadosContatos"
-        aria-hidden="true">
+    <div class="modal fade" id="visualizarContato" tabindex="-1" role="dialog" aria-labelledby="visualizarDadosContatos" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -225,7 +221,7 @@
 </body>
 <script>
     $(document).ready(function() {
-        $('#visualizarContato').on('show.bs.modal', function (event) {
+        $('#visualizarContato').on('show.bs.modal', function(event) {
             var origemContato = $(event.relatedTarget);
             var codigoContato = origemContato.data('whatever');
 
