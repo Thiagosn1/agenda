@@ -1,16 +1,16 @@
 <?php
-session_start();
+    session_start();
 
-$verificaUsuarioLogado = $_SESSION['verificaUsuarioLogado'];
+    $verificaUsuarioLogado = $_SESSION['verificaUsuarioLogado'];
 
-if (!$verificaUsuarioLogado) {
-    header("Location: index.php?codMsg=003");
-} else {
-    include "conectaBanco.php";
+    if (!$verificaUsuarioLogado) {
+        header("Location: index.php?codMsg=003");
+    } else {
+        include "conectaBanco.php";
 
-    $nomeUsuarioLogado = $_SESSION['nomeUsuarioLogado'];
-    $codigoUsuarioLogado = $_SESSION['codigoUsuarioLogado'];
-}
+        $nomeUsuarioLogado = $_SESSION['nomeUsuarioLogado'];
+        $codigoUsuarioLogado = $_SESSION['codigoUsuarioLogado'];
+    }
 ?>
 
 <!DOCTYPE html>
@@ -40,17 +40,13 @@ if (!$verificaUsuarioLogado) {
             height: 100%;
             overflow-x: hidden;
         }
-
-        .custom-file-input~.custom-file-label::after {
-            content: "Selecionar";
-        }
     </style>
 </head>
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="main.php">
                 <img src="img/icone.svg" width="30" height="30" alt="Agenda de contatos">
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
@@ -120,7 +116,8 @@ if (!$verificaUsuarioLogado) {
                                 if ($mailUsuario == $mail2Usuario && $senhaUsuario == $senha2Usuario) {
 
                                     if (strlen($nomeUsuario) >= 5 && strlen($senhaUsuario) >= 8) {
-
+                                        $codigoUsuarioLogado = $_SESSION['codigoUsuarioLogado'];
+                                        
                                         $senhaAtualUsuarioMD5 = md5($senhaAtualUsuario);
 
                                         $sqlSenhaUsuario = "SELECT codigoUsuario FROM usuarios WHERE codigoUsuario=:codigoUsuario AND senhaUsuario=:senhaUsuario";
@@ -151,7 +148,10 @@ if (!$verificaUsuarioLogado) {
                                                     $senhaUsuarioMD5 = $senhaAtualUsuarioMD5;
                                                 }
 
-                                                $sqlEditarUsuario = "UPDATE usuarios SET nomeUsuario=:nomeUsuario, mailUsuario=:mailUsuario,senhaUsuario=:senhausuario WHERE codigoUsuario=:codigoUsuario";
+                                                echo $codigoUsuarioLogado . $nomeUsuario . $mailUsuario . $senhaUsuarioMD5;
+
+
+                                                $sqlEditarUsuario = "UPDATE usuarios SET nomeUsuario=:nomeUsuario, mailUsuario=:mailUsuario, senhaUsuario=:senhaUsuario WHERE codigoUsuario=:codigoUsuario;";
 
                                                 $sqlEditarUsuarioST = $conexao->prepare($sqlEditarUsuario);
                                                 $sqlEditarUsuarioST->bindValue(':codigoUsuario', $codigoUsuarioLogado);
@@ -163,7 +163,7 @@ if (!$verificaUsuarioLogado) {
                                                     $mensagemAcao = "Cadastro de usuário editado com sucesso.";
                                                 } else {
                                                     $flagErro = True;
-                                                    $mensagemAcao = "Código erro: " . $sqlNovoUsuarioST->errorCode();
+                                                    $mensagemAcao = "Código erro: " . $sqlEditarUsuarioST->errorCode();
                                                 }
                                             } else {
                                                 $flagErro = True;
@@ -200,6 +200,7 @@ if (!$verificaUsuarioLogado) {
                                 </div>";
                         }
                     } else {
+                        $codigoUsuarioLogado = $_SESSION['codigoUsuarioLogado'];
 
                         $sqlUsuario = "SELECT nomeUsuario, mailUsuario, senhaUsuario FROM usuarios WHERE codigoUsuario=:codigoUsuario";
 
@@ -213,7 +214,7 @@ if (!$verificaUsuarioLogado) {
 
                         list($nomeUsuario, $mailUsuario, $senhaUsuario) = $resultadoUsuario[0];
                         print_r($resultadoUsuario);
-
+                        
                         $mail2Usuario = $mailUsuario;
                         $senha2Usuario = $senhaUsuario;
                     }
