@@ -1,16 +1,16 @@
 <?php
-    session_start();
+session_start();
 
-    $verificaUsuarioLogado = $_SESSION['verificaUsuarioLogado'];
+$verificaUsuarioLogado = $_SESSION['verificaUsuarioLogado'];
 
-    if (!$verificaUsuarioLogado) {
-        header("Location: index.php?codMsg=003");
-    } else {
-        include "conectaBanco.php";
+if (!$verificaUsuarioLogado) {
+    header("Location: index.php?codMsg=003");
+} else {
+    include "conectaBanco.php";
 
-        $nomeUsuarioLogado = $_SESSION['nomeUsuarioLogado'];
-        $codigoUsuarioLogado = $_SESSION['codigoUsuarioLogado'];
-    }
+    $nomeUsuarioLogado = $_SESSION['nomeUsuarioLogado'];
+    $codigoUsuarioLogado = $_SESSION['codigoUsuarioLogado'];
+}
 ?>
 
 <!DOCTYPE html>
@@ -117,7 +117,7 @@
 
                                     if (strlen($nomeUsuario) >= 5 && strlen($senhaUsuario) >= 8) {
                                         $codigoUsuarioLogado = $_SESSION['codigoUsuarioLogado'];
-                                        
+
                                         $senhaAtualUsuarioMD5 = md5($senhaAtualUsuario);
 
                                         $sqlSenhaUsuario = "SELECT codigoUsuario FROM usuarios WHERE codigoUsuario=:codigoUsuario AND senhaUsuario=:senhaUsuario";
@@ -213,8 +213,7 @@
                         $resultadoUsuario = $sqlUsuarioST->fetchALL();
 
                         list($nomeUsuario, $mailUsuario, $senhaUsuario) = $resultadoUsuario[0];
-                        print_r($resultadoUsuario);
-                        
+
                         $mail2Usuario = $mailUsuario;
                         $senha2Usuario = $senhaUsuario;
                     }
