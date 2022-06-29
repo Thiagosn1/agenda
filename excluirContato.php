@@ -17,7 +17,7 @@
 
             $sqlContatoST = $conexao->prepare($sqlContato);
             $sqlContatoST->bindValue(':codigoContato', $codigoContato);
-            $sqlContatoST->bindValue(':codigoUsuario', $codigousuarioLogado);
+            $sqlContatoST->bindValue(':codigoUsuario', $codigoUsuarioLogado);
 
             $sqlContatoST->execute();
 
